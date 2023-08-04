@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime, timedelta
 import requests
+import random
 
 conn = sqlite3.connect("adaptiveaquaponic.db")
 cursor = conn.cursor()
@@ -26,7 +27,7 @@ def insert_sample_data():
     current_time = datetime.now()
     cursor.execute(
         """INSERT INTO sensor_data (pool_id, temper_val, ph_val, humidity_val, oxygen_val, tds_val, turbidities_val, is_sent, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-        (2, 30.0, 7.0, 65.0, 5.0, 100.0, 100.0, 0, current_time),
+        (2, 30.0, 7.0, 65.0, 5.0, 100.0, 100.0, 0, "2023-07-22 22:48:22.708688"),
     )
     conn.commit()
     print("Sampel data berhasil dimasukkan ke local database")
@@ -108,7 +109,7 @@ def save_data_to_local(
             tds_val,
             turbidities_val,
             is_sent,
-            current_time,
+            "2023-07-22 22:48:22.708688",
         ),
     )
     conn.commit()
@@ -125,18 +126,18 @@ def delete_old_data():
 
 
 def main():
-    while True:
-        # program dibawah akan dijalankan ketika satu menit sekali
-        now = datetime.now()
-        if now.second == 0 and now.microsecond == 0:
+    # while True:
+    #     # program dibawah akan dijalankan ketika satu menit sekali
+    #     now = datetime.now()
+    #     if now.second == 0 and now.microsecond == 0:
             data = {
                 "pool_id": 2,
-                "temper_val": 25.39,
-                "ph_val": 7.2,
-                "humidity_val": 40.0,
-                "oxygen_val": 4.2,
-                "tds_val": 1693,
-                "turbidities_val": 1988.11,
+                "temper_val": round(random.uniform(24.0, 26.0), 2),
+                "ph_val": round(random.uniform(7.0, 8.0), 2),
+                "humidity_val": round(random.uniform(40.0, 42.0), 2),
+                "oxygen_val": round(random.uniform(4.0, 5.0), 2),
+                "tds_val": round(random.uniform(1693.0, 1695.0), 2),
+                "turbidities_val": round(random.uniform(1988.00, 1990.00), 2),
                 "is_sent": 0,
             }
 
